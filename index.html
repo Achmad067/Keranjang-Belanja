@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Project</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body class="bg-white text-gray-800 font-sans p-8">
+    <header class="z-10 sticky top-0 bg-white pt-5 pb-5">
+        <div class="w-9/12 flex items-center mx-auto">
+            <div class="w-1/2 uppercase">
+                <a href="#main" class="text-2xl">
+                    <span class="font-extrabold text-black">Photo</span>
+                    <span class="font-semibold text-green-400">Printing</span>
+                </a>
+            </div>
+            <div class="basis-1/2 flex items-center justify-end gap-10 mr-5">
+                <a href="#main"><span class="font-semibold text-lg hover:text-neutral-500">Product</span></a>
+                <a href="#cart"><span class="font-semibold text-lg hover:text-neutral-500">Cart</span></a>
+            </div>
+        </div>
+    </header>
+
+<div id="app" class="">
+    <h1 id="main" class="mb-4 text-center text-3xl ">Product</h1>
+
+    <div class="font-mono w-3/4 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!--Cards-->
+        <div v-for="(product, index) in products" :key="index" class="border p-6 rounded-lg bg-white shadow-lg hover:shadow-2xl max-w-md mx-auto mb-6">
+            <img class="object-cover h-48 bg-slate-300" :src="product.image" alt="pj">
+            <h2 class="text-xl font-bold mb-2">{{ product.name }}</h2>
+            <p class="text-gray-700 text-sm mb-4">{{ product.description }}</p>
+            <p class="text-lg font-bold mb-4">IDR.{{ product.price }}</p>
+            <button @click="addToCart(product)" class="w-full bg-green-400 text-white py-2 px-4 rounded-lg font-bold hover:scale-105 hover:bg-green-400">
+                ADD TO CART
+            </button>
+        </div>
+    </div>
+
+        <div id="cart" class="w-full lg:w-1/2 shadow-lg lg:p-10 m-8 mt-5 mb-5 mx-auto">
+            <div class="flex flex-row items-center justify-between px-5 mt-5 border-b-2">
+                <div> 
+                    <span class="font-bold text-xl">Current Order</span>
+                </div>
+                <div class="font-semibold my-4">
+                    <a href="" @click="clearCart"> 
+                        <span class="px-4 py-2 rounded-md bg-green-400 text-white hover:scale-105 hover:bg-green-300">Clear All</span>
+                    </a>
+                </div>
+            </div>
+            <ul>
+                <li v-for="(item, index) in cart" :key="index" class="mb-2 flex justify-between">
+                    <span>{{ item.name }} - IDR.{{ item.price }}</span>
+                    <button @click="removeFromCart(index)" class="text-white bg-red-600 rounded-md p-1 mt-1 mr-9 hover:bg-red-500">Delete</button>
+                </li>
+            </ul>
+            <p class="mt-4 font-bold text-xl">Total: IDR.{{ getTotal() }}</p>
+        </div>
+</div>
+
+<script>
+    const { createApp, ref } = Vue;
+
+    createApp({
+        data() {
+            return {
+                products: [
+                    { 
+                        name: 'Polaroid', 
+                        description: 'Lorem ipsum dolor sit amet.', 
+                        price: 10000,
+                        image : 'pj.jpeg' 
+                    },{ 
+                        name: 'Poster', 
+                        description: 'Lorem ipsum dolor sit amet.', 
+                        price: 15000,
+                        image : 'pj.jpeg' 
+                    },{ 
+                        name: 'Photo Album', 
+                        description: 'Lorem ipsum dolor sit amet.', 
+                        price: 20000, 
+                        image : 'pj.jpeg'
+                    },{ 
+                        name: 'Name Card', 
+                        description: 'Lorem ipsum dolor sit amet.', 
+                        price: 25000, 
+                        image : 'pj.jpeg'
+                    },{ 
+                        name: 'Book', 
+                        description: 'Lorem ipsum dolor sit amet.', 
+                        price: 5000 ,
+                        image : 'pj.jpeg'
+                    }
+                ],
+                cart: []
+            };
+        },
+        methods: {
+            addToCart(product) {
+                this.cart.push({ ...product });
+            },
+            removeFromCart(index) {
+                this.cart.splice(index, 1);
+            },
+            getTotal() {
+                return this.cart.reduce((total, item) => total + item.price, 0).toFixed(2);
+            },
+            clearCart() {
+                this.cart = [];
+            }
+        }
+    }).mount('#app');
+</script>
+
+<footer class="bg-white text-neutral-400 text-center  mt-10 font-mono "> <!--footer-->
+    Achmad Irsyadul Ibad © 2023. All Right Reserved
+</footer>
+
+</body>
+</html>
